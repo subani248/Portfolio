@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Mahabu Subani Shaik | Portfolio</title>
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Root Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #2c3e50;
+            --background-color: #f4f7f6;
+            --content-bg-color: #ffffff;
+            --text-color: #555;
+            --light-text-color: #ecf0f1;
+            --nav-bg-color: #2c3e50;
+            --nav-hover-bg: #34495e;
+            --nav-width: 250px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- General Styles & Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        body.modal-active {
+            overflow: hidden; /* Prevent background scroll when modal is open */
+        }
+        h1, h2 {
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* --- Side Navigation --- */
+        #side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--nav-width);
+            height: 100vh;
+            background-color: var(--nav-bg-color);
+            padding: 2rem 0;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out;
+        }
+        .logo {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+            color: #fff;
+        }
+        #nav-links {
+            list-style: none;
+        }
+        #nav-links li a {
+            display: block;
+            padding: 1rem 2rem;
+            color: var(--light-text-color);
+            transition: background-color 0.3s, padding-left 0.3s;
+        }
+        #nav-links li a:hover,
+        #nav-links li a.active {
+            background-color: var(--nav-hover-bg);
+            color: #fff;
+            padding-left: 2.5rem;
+            font-weight: 600;
+        }
+
+        /* --- Mobile Menu & Overlay --- */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            background: var(--nav-bg-color);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* --- Header & Sections --- */
+        .intro {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #fff;
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)), url('https://images.unsplash.com/photo-1555066931-4365d1469c9b?auto=format&fit=crop&q=80&w=1740') no-repeat center center/cover;
+            margin-left: var(--nav-width);
+        }
+        .portfolio-title {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+        .welcome-msg {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        .section {
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: var(--nav-width);
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .section:last-of-type { border-bottom: none; }
+
+        /* --- Content Box Styling --- */
+        .content-box {
+            background-color: var(--content-bg-color);
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+        .content-box .fas, .content-box .fab {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        .content-box h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .content-box p {
+            margin-bottom: 1rem;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Project & Certification Lists --- */
+        .project-list, .certification-list {
+            list-style: none;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .project-list li, .certification-list li {
+            background: #f9fafb;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 5px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-list li { cursor: pointer; }
+        .certification-list li { cursor: pointer; } /* Make certifications clickable */
+        .project-list li:hover, .certification-list li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        .project-list li strong, .certification-list li strong {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        .project-list li span, .certification-list li span {
+            font-size: 0.9rem;
+            color: #777;
+            font-family: monospace;
+        }
+
+        /* --- CERTIFICATE MODAL STYLES --- */
+        #certificate-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 90%;
+            max-height: 90vh;
+            display: flex; /* Helps in containing the image */
+            animation: zoomIn 0.3s ease;
+        }
+        .modal-image {
+            max-width: 100%;
+            max-height: calc(90vh - 30px); /* Account for padding */
+            object-fit: contain; /* Ensure image aspect ratio is maintained */
+        }
+        .modal-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: white;
+            color: #333;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .modal-close:hover {
+            transform: scale(1.1);
+            background-color: #f0f0f0;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
+
+        /* --- Contact & Social Links --- */
+        .social-links { margin-top: 2rem; }
+        .social-links a {
+            color: var(--secondary-color);
+            font-size: 2.2rem;
+            margin: 0 1rem;
+            transition: color 0.3s, transform 0.3s;
+            display: inline-block;
+        }
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        /* --- Scroll to Top Button --- */
+        .scroll-to-top {
+            display: none; /* JS will manage visibility */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 998;
+            opacity: 0.9;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .scroll-to-top:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            #side-nav {
+                transform: translateX(-100%);
+            }
+            #side-nav.active {
+                transform: translateX(0);
+                box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            }
+            .intro, .section {
+                margin-left: 0;
+            }
+            .menu-toggle { display: block; }
+            .overlay.active { display: block; }
+            .portfolio-title { font-size: 2.5rem; }
+            .content-box h2 { font-size: 2.2rem; }
+            .content-box { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="side-nav">
+        <div class="logo">Subani Tech Space</div>
+        <ul id="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="intro">
+        <h1 class="portfolio-title">Mahabu Subani Shaik's Portfolio</h1>
+        <p class="welcome-msg">Welcome to my digital space.</p>
+        <p>Crafted with curiosity, coded with passion – keep exploring ↓</p>
+    </header>
+
+    <main>
+        <section id="home" class="section">
+            <div class="content-box">
+                <i class="fas fa-home"></i>
+                <h1>Welcome</h1>
+                <p>Hi, I'm Mahabu Subani Shaik</p>
+                <p>I'm a Computer Science Engineering student at Vignan University, passionate about building efficient, scalable, and user-friendly applications.</p>
+                <p>I specialize in HTML, CSS, JavaScript, and Python, and I'm currently exploring backend development using Flask and MySQL.</p>
+                <p>I love turning ideas into functional products and continuously strive to learn, build, and grow in the world of technology.</p>
+                <p>Feel free to explore my projects and connect with me!</p>
+
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="content-box">
+                <i class="fas fa-user"></i>
+                <h2>About Me</h2>
+               <p>Hi, I’m <strong>Subani Shaik</strong>, a dedicated Computer Science Engineering student at <strong>Vignan University</strong> with a strong interest in full-stack development.</p>
+    <p>I enjoy creating clean, responsive websites and building web applications that solve real-world problems. My technical toolkit includes <strong>HTML, CSS, JavaScript, Python</strong>, and I’m currently diving deeper into backend technologies like <strong>Flask</strong> and <strong>MySQL</strong>.</p>
+    <p>I’m always curious and love exploring new technologies, participating in projects, and collaborating with others to learn and grow.</p>
+    <p>Outside of coding, I’m passionate about continuous self-improvement, creativity, and sharing knowledge through my work.</p>
+                <p>Feel free to connect with me on my social media platforms or check out my projects below!</p>           
+</div>
+        </section>
+
+<section id="skills" class="section">
+  <div class="content-box">
+    <i class="fas fa-code"></i>
+    <h2>Skills</h2>
+    <p>
+      Proficient in HTML, CSS, JavaScript, responsive design, and user experience improvement. I continuously learn modern web technologies and frameworks to stay ahead in front-end development, ensuring efficient and scalable solutions.
+    </p>
+
+    <ul style="list-style: none; padding: 0; margin-top: 20px;">
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">HTML</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">CSS</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">JavaScript</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">Responsive Design</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">Python</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">C Programming</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">Java</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">DBMS</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">MySQL</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">Flask (Learning)</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">Data Structures</li>
+      <li style="display: inline-block; background: #ecf0f1; color: #2c3e50; padding: 10px 16px; margin: 5px; border-radius: 20px;">Git(learning)</li>
+    </ul>
+  </div>
+</section>
+
+        <section id="projects" class="section">
+            <div class="content-box">
+                <i class="fas fa-folder-open"></i>
+                <h2>Projects</h2>
+                <p>Here’s a glimpse into what I’ve built so far. Each project is a reflection of my learning, creativity, and attention to detail.</p>
+                <ul class="project-list">
+                    <li onclick="window.open('https://learnify-gq2h.vercel.app/', '_blank');">
+                        <strong>Learnify (Learning Platform)</strong>
+                        <span class="project-url">https://learnify-gq2h.vercel.app/</span>
+                    </li>
+                    <li onclick="window.open('https://game-two-kohl.vercel.app/', '_blank');">
+                        <strong>Dice Game</strong>
+                        <span class="project-url">https://game-two-kohl.vercel.app/</span>
+                    </li>
+                     <li onclick="window.open('https://tic-tac-toe-seven-puce-16.vercel.app/', '_blank');">
+                        <strong>tic-tac-toe</strong>
+                        <span class="project-url">https://tic-tac-toe-seven-puce-16.vercel.app/</span>
+                    </li>
+                     <li onclick="window.open('https://calculator-pi-six-78.vercel.app/', '_blank');">
+                        <strong>iphone style calculator</strong>
+                        <span class="project-url">https://calculator-pi-six-78.vercel.app/</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="section">
+            <div class="content-box">
+                <i class="fas fa-award"></i>
+                <h2>Certifications</h2>
+                <p>Here are some of the certifications I've earned. Click on any certificate to view it.</p>
+                <ul class="certification-list">
+                    <!-- !! IMPORTANT !! Replace the 'data-img-src' with links to YOUR certificate images -->
+                    <li class="certificate-item" data-img-src="Certificate/clg.jpg">
+                        <strong> Mastering git for efficient version control</strong>
+                        <span>Issued by Vignan University - March, 2025</span>
+                    </li>
+                    <li class="certificate-item" data-img-src="Certificate/data .jpg">
+                        <strong>Data Structures </strong>
+                        <span>Issued by orcadehub - March, 2025</span>
+                    </li>
+                    <li class="certificate-item" data-img-src="Certificate/frontenf .jpg">
+                        <strong>Frontend Development</strong>
+                        <span>Issued by orcadehub - March, 2025</span>
+                    </li>
+                    <li class="certificate-item" data-img-src="Certificate/nptel.jpg">
+                        <strong> Principles of Management </strong>
+                        <span>Issued by nptel - jan-apr(12 weeks course), 2025</span>
+                    </li>
+                    <li class="certificate-item" data-img-src="Certificate/python.jpg">
+                        <strong> Python programming </strong>
+                        <span>Issued by orcadehub - March, 2025</span>
+                    </li>
+                    
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="content-box">
+                <i class="fas fa-envelope"></i>
+                <h2>Contact</h2>
+                <p>Feel free to reach out for collaborations, job opportunities, or just to say hello!</p>
+                <div class="social-links">
+                    <a href="mailto:subanishaik248@gmail.com"target="_blank" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="www.linkedin.com/in/subani-shaik-3201a42a9" target="_blank" title="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/subani248" target="_blank" title="GitHub Profile"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/mahabu_subani_shaik?igsh=MTNoMnFiMHliZ21yMw==" target="_blank" title="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                    <a href="tel:7569337729" target="_blank" title="Phone Number"><i class="fas fa-phone"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Certificate Modal Structure -->
+    <div id="certificate-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">×</button>
+            <img src="" alt="Certificate" class="modal-image" id="modal-img">
+        </div>
+    </div>
+    
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTopBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Mobile Navigation ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideNav = document.getElementById('side-nav');
+    const overlay = document.getElementById('overlay');
+
+    const closeNav = () => {
+        sideNav.classList.remove('active');
+        overlay.classList.remove('active');
+    };
+
+    menuToggle.addEventListener('click', () => {
+        sideNav.classList.toggle('active');
+        overlay.classList.toggle('active');
+    });
+
+    overlay.addEventListener('click', closeNav);
+    document.querySelectorAll('#nav-links a').forEach(link => {
+        link.addEventListener('click', closeNav);
+    });
+
+    // --- Active Nav Link on Scroll ---
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('#nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // --- Scroll to Top Button ---
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.style.display = 'block';
+        } else {
+            scrollToTopBtn.style.display = 'none';
+        }
+    });
+
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // --- CERTIFICATE MODAL LOGIC ---
+    const certificateModal = document.getElementById('certificate-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const certificateItems = document.querySelectorAll('.certificate-item');
+
+    // Function to open the modal
+    const openModal = (imgSrc) => {
+        modalImg.src = imgSrc;
+        certificateModal.style.display = 'flex';
+        document.body.classList.add('modal-active');
+    };
+
+    // Function to close the modal
+    const closeModal = () => {
+        certificateModal.style.display = 'none';
+        document.body.classList.remove('modal-active');
+        modalImg.src = ''; // Clear image src
+    };
+
+    // Add click event to each certificate item
+    certificateItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const imgSrc = item.getAttribute('data-img-src');
+            if (imgSrc) {
+                openModal(imgSrc);
+            }
+        });
+    });
+
+    // Add click event to close button
+    modalCloseBtn.addEventListener('click', closeModal);
+
+    // Add click event to modal background (overlay) to close it
+    certificateModal.addEventListener('click', (e) => {
+        if (e.target === certificateModal) {
+            closeModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && certificateModal.style.display === 'flex') {
+            closeModal();
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>
